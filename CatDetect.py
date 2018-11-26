@@ -9,6 +9,8 @@ def detectCatByCascade(movie):
     while(movie.isOpened()):
         ret, frame = movie.read()
         if ret:
+            cv2.imwrite('background.png', frame)
+            break
             if count % 10 == 0:
                 dstimg = frame.copy()
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -34,14 +36,19 @@ def detectCatByDiff(movie):
         ret, frame = movie.read()
         if ret:
             if count > 100:
-                dstimg = frame.copy()
                 imgDiff = cv2.absdiff(frame, frame2)
-                cv2.imwrite('frame/cat_frame_%d.png' % count, imgDiff)
+                gray = cv2.cvtColor(imgDiff, cv2.COLOR_BGR2GRAY)
+                retval, bw = cv2.threshold(gray, 50, 255, cv2.THRESH_BINARY)
+                frame3, contours, hierarchy = cv2.findContours(bw, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+                print('%d %d' % (count, len(contours)))
+                x,y,w,h = cv2.boundingRect(contours)
+                img = cv2.rectangle(imgDiff,(x,y),(x+w,y+h),(0,255,0),2)
+                cv2.imwrite('frame/cat_frame_%d.png' % count, img)
+            frame2 = frame
         count += 1
-        frame2 = frame
-        if count > 150:
+        if count > 140:
             break
 
 movie = cv2.VideoCapture('cat1.mp4')
-detectCatByCascade(movie)
+detectCatByDiff(movie)
 movie.release()
