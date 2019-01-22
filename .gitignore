@@ -1,1 +1,12 @@
 /frame
+.DS_Store
+*/.DS_Store
+cascade/*.jpeg
+cascade/*.png
+cascade/frame/
+*/.ipynb_checkpoints/
+sklearn/bestshot/
+sklearn/frame/
+sklearn/movie/
+sklearn/train_cat/
+sklearn/train_nocat/
