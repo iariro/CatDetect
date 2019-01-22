@@ -1,4 +1,5 @@
 import cv2
+import sys
 import numpy as np
 
 def detectCatByCascade(movie):
@@ -56,6 +57,6 @@ def detectCatByDiff(movie):
         if count > 20:
             break
 
-movie = cv2.VideoCapture('cat1.mp4')
+movie = cv2.VideoCapture(sys.argv[1])
 detectCatByDiff(movie)
 movie.release()

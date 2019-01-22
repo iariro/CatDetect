@@ -15,6 +15,7 @@ cap = cv2.VideoCapture(sys.argv[1])
 while True:
 	is_ok, frame = cap.read()
 	if not is_ok: break
+	frame_org = copy.copy(frame)
 	frame = cv2.resize(frame, (640, 360))
 	frame2 = copy.copy(frame)
 	frame_count += 1
@@ -38,7 +39,7 @@ while True:
 				cv2.rectangle(frame2, (x, y), (x+w, y+h), (0, 255, 0), 2)
 		if cat_count >= cat_th:
 			fname = output_dir + '/cat' + str(frame_count) + '.png'
-			cv2.imwrite(fname, frame)
+			cv2.imwrite(fname, frame_org)
 			count += 1
 		cv2.imshow('CAT', frame2)
 	if cv2.waitKey(1) == 13: break
